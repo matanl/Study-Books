@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 		Sleep(1500);
 	}
 
-
+	/*doesn't really get here cause it's an infinte loop*/
 	deleteQueue(changeQueue);
 	freeBoard(board,height);
 	return 0;
