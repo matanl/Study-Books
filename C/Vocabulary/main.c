@@ -57,9 +57,9 @@ int main(int argc,char* argv[])
 		word_org = getNextWord(tfile, &spaces); /*updates spaces*/
 		word_new = wordInVocabulary(word_org, vfile); /*get new word from vocabulary, word_org is returned if it isn't in vocabulary*/
 		/*write word_new and spaces to the new file*/
-		fputs(word_new, ofile);
-		if (spaces != NULL){
-			fputs(spaces, ofile);
+		fputs(word_new, ofile); // T: check for fputs failure
+		if (spaces != NULL){ 
+			fputs(spaces, ofile); // T: check for fputs failure
 		}
 		/*free alocated strings*/
 		if (word_new!=word_org)
@@ -115,7 +115,7 @@ char* wordInVocabulary(char* word,FILE* vfile)
 		}
 	}
 	fseek(vfile, 0, SEEK_SET);
-	return word;
+	return word; // T: free definition memory
 }
 char* getNextWord(FILE* f, char** spacesOutput)
 {
@@ -170,11 +170,11 @@ char* getNextWord(FILE* f, char** spacesOutput)
 
 	return word;
 }
-char* copyFromArray(char arr[],int size)
+char* copyFromArray(char arr[],int size) // T: you included string.h you can use memcpy or strndup
 {
 	int i;
 	/*allocate memmory so the word can live on other scpoes and coppy it*/
-	char* word = malloc(sizeof(char)*(size + 1));/*sizeof(char) is always 1*/
+	char* word = malloc(sizeof(char)*(size + 1));/*sizeof(char) is always 1*/ // T: malloc can fail and return null
 	for (i = 0; i < size; i++)
 	{
 		word[i] = arr[i];
