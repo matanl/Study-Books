@@ -54,14 +54,14 @@ int main(int argc, char* argv[])
 	{
 		free(board);
 		return FILE_CLOSE_ERROR;
-		printf("error in closing the board file\n");
+		printf("error in closing the board file\n"); // T: printf after return
 	}
 	if (board==NULL)
 	{
 		return FILE_FORMAT_ERROR;
 	}
 
-	changeQueue = newQueue();
+	changeQueue = newQueue(); // T: check changeQueue is not null
 
 	/*print initial state*/
 	system("cls");/*clear the screen*/
@@ -90,14 +90,14 @@ void printBoard(int** board, int width, int height)
 	{
 		for (j = 0; j < width; j++)
 		{
-			printf("%d ", board[i][j]);
+			printf("%d ", board[i][j]); // T: check board is not null
 		}
 		printf("\n");
 	}
 }
 void calcChange(int**board, int width, int height, struct Queue* change)
 {
-	int i, j;
+	int i, j; // T: check board and change are not null
 	int x, y;
 	int start_x;
 	int neighborsCount;
@@ -132,7 +132,7 @@ void calcChange(int**board, int width, int height, struct Queue* change)
 			{
 				if (neighborsCount==3)
 				{
-					queueInsert(change, i);
+					queueInsert(change, i); // T: nice!
 					queueInsert(change, j);
 				}
 				break; 
@@ -155,10 +155,10 @@ void calcChange(int**board, int width, int height, struct Queue* change)
 void flip(int** board, struct Queue* q)
 {
 	int x, y;
-	while (queueSize(q) > 0)
+	while (queueSize(q) > 0) // T: check board and q are not null
 	{
 		x = queuePop(q);
-		y = queuePop(q);
+		y = queuePop(q); // T: nice!
 		board[x][y] = board[x][y] ^ 1; /*0^1=1 and 1^1=0, xor with 1 effectivly flips the content*/
 	}
 }
@@ -167,13 +167,13 @@ void freeBoard(int** board,int height)
 	int i;
 	for (i = 0; i < height; i++)
 	{
-		free(board[i]);
+		free(board[i]); // T: check board is not null (if board[i] is null it is ok but a bit weird)
 	}
 	free(board);
 }
 int** readBoard(FILE* f,int* width,int* height)
 {
-	int size;
+	int size; // T: check all parameters are not null 
 	char c;
 	int** board;
 	int i;
@@ -203,12 +203,12 @@ int** readBoard(FILE* f,int* width,int* height)
 	}
 	*height = size / *width;
 
-	board = malloc((*height)*sizeof(int*));
+	board = malloc((*height)*sizeof(int*)); // T: malloc can fail and return null
 	/*read board*/
 	fseek(f, 0, SEEK_SET);
 	for ( i = 0; i < *height; i++)
 	{
-		board[i] = malloc((*width)*sizeof(int));
+		board[i] = malloc((*width)*sizeof(int)); // T: why not allocate height*width*sizeof(int)???
 		for (j = 0; j < *width; j++)
 		{
 			c = fgetc(f);
