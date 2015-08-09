@@ -1,7 +1,7 @@
 #if !defined(LIST_H)
 #define LIST_H
 
-
+// T: forward decleration!! nice
 struct Node;
 struct List;
 
